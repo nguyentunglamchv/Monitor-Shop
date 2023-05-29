@@ -1,0 +1,84 @@
+<!-- Product section-->
+<section class="py-5" style="min-height: 700px;">
+    <div class="container my-5"
+        style="border: 1px solid rgb(235, 235, 235); border-radius: 15px;min-height: 450px;box-shadow: 0 0 6px rgb(226, 226, 226);">
+        <div class="row">
+            <div class="title mt-4 col-7"
+                style="border-right: 1px solid rgb(192, 192, 192);padding-right: 20px; margin-left: 10px;min-height: 400px;">
+                <div class="row">
+                    <div class="col" style="padding-left: 25px;">
+                        <h4><b>Giỏ hàng</b></h4>
+                    </div>
+                    <div class="col-2 align-self-center text-right text-muted mb-5">{{totalItem}} sản phẩm</div>
+                    <div class="row text-center mt-4" *ngIf="totalItem<1">
+                        <h2>Bạn chưa thêm sản phẩm nào vào giỏ hàng!</h2>
+                        <h3>Hãy cùng nhau mua sắm nào!</h3>
+                        <a [routerLink]="['/home-page']" style="color: tan; font-size: 40px;"><i
+                                class="bi bi-house-door-fill"></i></a>
+                    </div>
+                    <div class="row border-top p-3" style="margin-left: 0px;" *ngFor="let item of cartDetails">
+                        <div class="row main align-items-center">
+                            <div class="col-2"><img class="img-fluid p-2" style="width: 100px; cursor: pointer;"
+                                    [routerLink]="['/item-detail/'+item.product.productId]" [src]="item.product.image">
+                            </div>
+                            <div class="col">
+                                <div class="row">{{item.product.name}}</div>
+                            </div>
+                            <div class="col-2 text-center">
+                                <input type="number" [value]="item.quantity" min="1" name="quantity"
+                                    [(ngModel)]="item.quantity" (change)="update(item.id, item.quantity)"
+                                    style="border: none; width: 70px; box-shadow: 0 0 2px rgb(228, 228, 228);"
+                                    class="form-control text-center">
+                            </div>
+                            <div class="col text-center">
+                                <small style="font-size: 10px;"
+                                    class="text-muted text-decoration-line-through">{{item.product.price*item.quantity|currency:'VND'}}</small>
+                                {{item.price|currency:'VND'}}
+                            </div>
+                            <div class="col-1 text-center"><a (click)="delete(item.id)"
+                                    style="text-decoration: none; color: red; cursor: pointer;"
+                                    class="close">&#10005;</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <form [formGroup]="postForm" class="col-4 mt-4 offset-1" style="margin-left: 50px;">
+                <div class="row mb-4">
+                    <h4><b>Đặt hàng</b></h4>
+                </div>
+                <div class="row border-top" style="margin-top: 10%;">
+                    <div class="form-group mt-3">
+                        <label for="address">Địa chỉ:</label>
+                        <input type="text" name="address" formControlName="address" id="address" class="form-control"
+                            [ngClass]="{'is-invalid':postForm.get('address')?.touched && postForm.get('address')?.invalid}"
+                            placeholder="" aria-describedby="helpId">
+                        <small *ngIf="postForm.get('address')?.invalid && postForm.get('address')?.touched"
+                            class="text-danger">Địa chỉ không hợp lệ!</small>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="phone">Số điện thoại:</label>
+                        <input type="text" name="phone" formControlName="phone" id="phone" class="form-control" placeholder=""
+                            [ngClass]="{'is-invalid':postForm.get('phone')?.touched && postForm.get('phone')?.invalid}"
+                            aria-describedby="helpId">
+                        <small *ngIf="postForm.get('phone')?.invalid && postForm.get('phone')?.touched"
+                            class="text-danger">Số điện thoại không hợp lệ!</small>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col"><b>Tổng tiền:</b></div>
+                    <div class="col text-right"><b>{{amountReal|currency:'VND'}}</b></div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col"><b>Giảm giá:</b></div>
+                    <div class="col text-right"><b>-{{discount|currency:'VND'}}</b></div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col"><b>Số tiền phải trả:</b></div>
+                    <div class="col text-right"><b>{{amount|currency:'VND'}}</b></div>
+                </div>
+                <button class="btn btn-success mt-3 mb-3" (click)="checkOut()" [disabled]="postForm?.invalid || totalItem==0">CHECKOUT</button>
+            </form>
+        </div>
+
+    </div>
+</section>

@@ -1,0 +1,87 @@
+<!-- Header-->
+<header class="" style="margin-top: 3%;">
+    <img src="assets/banner.jpg" class="img-fluid">
+</header>
+<!-- Section-->
+<section class="py-3">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row mb-4">
+            <div class="col-3">
+                <mat-form-field>
+                    <mat-label>Tìm kiếm</mat-label>
+                    <input matInput type="text" (keyup)="search($event)" />
+                </mat-form-field>
+                <b class="bi bi-search" style="margin: auto 7px; font-size: 20px;"></b>
+            </div>
+            <div class="col-2 offset-7" *ngIf="totalLength!=0">
+                <select class="form-select" [(ngModel)]="keyF" (change)="sort(keyF)">
+                    <option selected value=''>Tất cả</option>
+                    <option value='enteredDate'>Mới nhất</option>
+                    <option value='priceDesc'>Giá giảm dần</option>
+                    <option value='priceAsc'>Giá tăng dần</option>
+                </select>
+            </div>
+        </div>
+        <div class="row" *ngIf="totalLength==0">
+            <h1 class="text-center" style="margin-top: 25%; font-size: 50px; min-height: 500px;">Không tìm thấy sản phẩm phù hợp !</h1>
+        </div>
+        <div class="row" *ngIf="isLoading">
+            <div class="pull-right label label-info row col" style="min-height: 700px !important;">
+                <!-- <div class="loader"></div> -->
+                <div class="spinner-border" role="status"
+                    style="margin: auto; width: 6em;height: 6em; border: 0.7em solid black currentColor;">
+                </div>
+            </div>
+        </div>
+        <div class="col mb-3">
+            <h1 style="text-decoration: underline;">Sản phẩm của hãng: {{brand}}</h1>
+        </div>
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-5 justify-content-center" *ngIf="!isLoading && totalLength!=0">            
+            <div class="col mb-3 p-2"
+                *ngFor="let item of products | orderBy : key : reverse | paginate: { itemsPerPage: 15, currentPage: page} ">
+                <div class="card h-100" style="box-shadow: 0 3px 2px rgba(218, 218, 218, 0.562); border-radius: 8px;">
+                    <!-- Sale badge-->
+                    <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale
+                    </div>
+                    <!-- Product image-->
+                    <img class="card-img-top" style="width: 80%; margin-left: 10%; cursor: pointer;" [src]="item.image"
+                        [routerLink]="['/item-detail/'+item.productId]" />
+                    <!-- Product details-->
+                    <div class="card-body p-4">
+                        <div class="text-center">
+                            <!-- Product name-->
+                            <a class="fw-bolder" [routerLink]="['/item-detail/'+item.productId]"
+                                style="font-size: 14px; text-decoration: none; color: teal;">{{item.name}}</a>
+                            <!-- Product reviews-->
+                            <div class="d-flex justify-content-center small text-warning mb-2">
+                                <ngb-rating class="mb-2" [rate]="getStar(item.productId)" title="{{getStar(item.productId)}} sao" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>
+                            </div>
+                            <!-- Product price-->
+                            <span class="text-muted text-decoration-line-through"
+                                style="font-size: 11px;">{{item.price|currency:'VND'}}</span>
+                            <b>{{item.price*(1 - item.discount/100) | currency:'VND'}}</b>
+                        </div>
+                    </div>
+                    <!-- Product actions-->
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" (click)="addCart(item.productId, item.price*(1 - item.discount/100))">Add to cart</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Pagination -->
+        <pagination-controls (pageChange)="page = $event" previousLabel="" nextLabel="" class="text-center">
+        </pagination-controls>
+    </div>
+</section>
+
+<!-- star -->
+<ng-template #t let-fill="fill">
+    <span class="star" [class.full]="fill === 100" style="font-size: 90%;">
+        <span class="half" [style.width.%]="fill">
+            <i class="fa fa-star"></i>
+        </span>
+        <i class="fa fa-star"></i>
+    </span>
+</ng-template>

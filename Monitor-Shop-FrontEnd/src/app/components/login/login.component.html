@@ -1,0 +1,48 @@
+<div class="container mt-4" style="margin-bottom: 180px;">
+    <div class="row">
+        <div class="col-5 offset-3"
+            style="margin-top: 11%; border: 1px solid rgba(128, 128, 128, 0.137); border-radius: 15px;box-shadow: 0 0 3px rgba(128, 128, 128, 0.445); background-color: rgba(251, 253, 255, 0.329);">
+            <form class="p-5" [formGroup]="postForm">
+                <h3 class="text-center" style="font-size: 35px; font-weight: 600;">ĐĂNG NHẬP</h3>
+                <div class="form-group mt-5">
+                    <input style="border-radius: 15px; padding: 9px 17px;" type="text"
+                        [ngClass]="{'is-invalid':postForm.get('username')?.touched && postForm.get('username')?.invalid}"
+                        class="form-control" formControlName="username" placeholder="Tên đăng nhập"
+                        aria-describedby="helpId">
+                    <small class="text-danger"
+                        *ngIf="postForm.get('username')?.invalid && postForm.get('username')?.touched">Hãy nhập
+                        Email</small>
+                </div>
+                <div class="form-group mt-4">
+                    <input style="border-radius: 15px; padding: 9px 17px;" type="password"
+                        [ngClass]="{'is-invalid':postForm.get('password')?.touched && postForm.get('password')?.invalid}"
+                        id="password" formControlName="password" [type]="show ? 'text' : 'password'"
+                        class="form-control" placeholder="Mật khẩu" aria-describedby="helpId">
+                    <small class="text-danger"
+                        *ngIf="postForm.get('password')?.invalid && postForm.get('password')?.touched">Hãy nhập mật
+                        khẩu</small>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" (click)="password()" id="flexCheckChecked"
+                        style="font-size: 12px; margin-top: 9px;">
+                    <label class="form-check-label" for="flexCheckChecked"
+                        style="margin-top: 3px;font-size: 14px;font-family: inherit;color: rgba(68, 68, 68, 0.801);">
+                        {{!show?'Hiển thị mật khẩu':'Ẩn mật khẩu'}}
+                    </label>
+                </div>
+                <div class="row mt-2 ps-3">
+                    <a class="mt-1 mb-3 col-6" style="color: rgb(128, 187, 255); text-decoration: none;" [routerLink]="['/forgot-password']">Quên mật
+                        khẩu?</a>
+                    <a class="mt-1 mb-3 col-6"
+                        style="color: rgb(128, 187, 255); text-decoration: none; text-align: right;" [routerLink]="['/register']">Tạo tài khoản</a>
+                </div>
+                <div class="form-group mt-3 text-center">
+                    <button class="btn btn-success"
+                        style="border-radius: 15px; width: 90%; background-color: rgb(0, 177, 118);"
+                        [disabled]="postForm.invalid" (click)="Login()">ĐĂNG
+                        NHẬP</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

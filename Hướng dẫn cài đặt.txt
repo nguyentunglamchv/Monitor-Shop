@@ -1,0 +1,9 @@
+Import file monitor-shop.sql vào mysql
+import project back end vào STS hoặc eclipse
+ - Config lại database, email
+import 2 project front end vào vscode
+ - Chạy lệnh npm install
+
+->run project back-end
+->run 2 project front end (ng serve -o, ng serve -o --port 4201)
+-----Done---- 

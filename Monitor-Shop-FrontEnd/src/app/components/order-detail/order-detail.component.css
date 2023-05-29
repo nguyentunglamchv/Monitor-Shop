@@ -1,0 +1,37 @@
+.form-control[readonly]{
+    background-color: white !important;
+    border: none;
+}
+
+.disabled {
+  pointer-events: none;
+    cursor: default;
+    color: slategrey !important;
+}
+
+table {
+    width: 100%;
+}
+
+.star {
+    position: relative;
+    display: inline-block;
+    font-size: 3rem;
+    color: #d3d3d3;
+  }
+  .full {
+    color: orange;
+  }
+  .half {
+    position: absolute;
+    display: inline-block;
+    overflow: hidden;
+    color: orange;
+  }
+
+  /* .ng-star-inserted {
+    display: none !important;
+  } */
+  /* .sr-only{
+      display: none !important;
+  } */

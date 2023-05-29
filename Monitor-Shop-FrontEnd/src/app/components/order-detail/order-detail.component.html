@@ -1,0 +1,53 @@
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h2 class="modal-title p-0">Chi tiết đơn hàng</h2>        
+        <h2>Tổng tiền: {{order.amount|currency:'VND'}}</h2>
+    </div>
+    <div class="modal-body">
+        <table mat-table [dataSource]="listOrderDetail" class="mat-elevation-z8">
+            <ng-container matColumnDef="index">
+                <th mat-header-cell *matHeaderCellDef style="width: 10%;">STT</th>
+                <td mat-cell *matCellDef="let row, let i = index">{{i+1}}</td>
+            </ng-container>
+            <ng-container matColumnDef="image">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let row">
+                    <img [src]="row.product.image" class="img-fluid" style="width: 40px; cursor: pointer;" [routerLink]="['/item-detail/'+row.product.productId]" />
+                </td>
+            </ng-container>            
+            <ng-container matColumnDef="productName">
+                <th mat-header-cell *matHeaderCellDef>Sản phẩm</th>
+                <td mat-cell *matCellDef="let row">{{row.product.name}}</td>
+            </ng-container>           
+            <ng-container matColumnDef="quantity">
+                <th mat-header-cell *matHeaderCellDef>Số lượng</th>
+                <td mat-cell *matCellDef="let row">{{row.quantity}}</td>
+            </ng-container>                       
+            <ng-container matColumnDef="price">
+                <th mat-header-cell *matHeaderCellDef>Giá</th>
+                <td mat-cell *matCellDef="let row">{{row.price|currency:'VND'}}</td>
+            </ng-container>                      
+            <ng-container matColumnDef="rating">
+                <th mat-header-cell *matHeaderCellDef>Đánh giá</th>
+                <td mat-cell *matCellDef="let row" [ngClass]="{disabled: order.status!=3}">
+                    <app-rate [product]="row.product"></app-rate>
+                    <!-- <ngb-rating [(rate)]="rating" [starTemplate]="t" [readonly]="false" [max]="5"></ngb-rating> -->
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="columns"></tr>
+            <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+        </table>
+    </div>
+</ng-template>
+<a class="bi bi-eye-fill" style="cursor: pointer; color: teal;" (click)="open(content)"></a>
+
+<!-- star -->
+<ng-template #t let-fill="fill">
+    <span class="star" [class.full]="fill === 100" style="font-size: 90%;">
+        <span class="half" [style.width.%]="fill">
+            <i class="fa fa-star"></i>
+        </span>
+        <i class="fa fa-star"></i>
+    </span>
+</ng-template>

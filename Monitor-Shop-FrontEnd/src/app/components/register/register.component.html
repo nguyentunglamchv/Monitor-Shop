@@ -1,0 +1,78 @@
+<div class="container mt-4" style="margin-bottom: 10%;">
+    <div class="row">
+        <div class="col-7 offset-2"
+            style="margin-top: 11%; border: 1px solid rgba(128, 128, 128, 0.137); border-radius: 15px;box-shadow: 0 0 3px rgba(128, 128, 128, 0.445); background-color: rgba(251, 253, 255, 0.329);">
+            <form class="p-5" [formGroup]="postForm">
+                <h3 class="text-center" style="font-size: 35px; font-weight: 600;">ĐĂNG KÍ</h3>
+                <input type="hidden" formControlName="userId">
+                <input type="hidden" formControlName="gender">
+                <input type="hidden" formControlName="registerDate">
+                <input type="hidden" formControlName="status">
+                <input type="hidden" formControlName="role">
+                <div class="row p-2">
+                    <div class="form-group col-6">
+                        <label for="fullname">Họ và tên:</label>
+                        <input type="text"
+                            [ngClass]="{'is-invalid':postForm.get('name')?.touched && postForm.get('name')?.invalid}"
+                            name="fullname" id="fullname" class="form-control" placeholder="Họ và tên"
+                            formControlName="name">
+                        <small class="text-danger"
+                            *ngIf="postForm.get('name')?.invalid && postForm.get('name')?.touched">Hãy nhập đúng họ
+                            tên</small>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="email">Email:</label>
+                        <input type="email" email
+                            [ngClass]="{'is-invalid':postForm.get('email')?.touched && postForm.get('email')?.invalid}"
+                            name="email" id="email" class="form-control" placeholder="Email" formControlName="email">
+                        <small class="text-danger"
+                            *ngIf="postForm.get('email')?.invalid && postForm.get('email')?.touched">Hãy nhập đúng
+                            email</small>
+                    </div>
+                    <div class="form-group col-6 mt-4">
+                        <label for="password">Password:</label>
+                        <input type="password" name="password" id="password" class="form-control"
+                            [ngClass]="{'is-invalid':postForm.get('password')?.touched && postForm.get('password')?.invalid}"
+                            formControlName="password" placeholder="Mật khẩu">
+                        <small class="text-danger"
+                            *ngIf="postForm.get('password')?.invalid && postForm.get('password')?.touched">Hãy nhập đúng
+                            mật khẩu</small>
+                    </div>
+                    <div class="form-group col-6 mt-4">
+                        <label for="otp">OTP:</label>
+                        <div class="input-group">
+                            <input type="text" maxlength="6"
+                                [ngClass]="{'is-invalid':postForm.get('otp')?.touched && postForm.get('otp')?.invalid}"
+                                formControlName="otp" name="otp" id="otp" class="form-control">
+                            <span class="input-group-text" style="font-size: 90%; cursor: pointer;"
+                                (click)="postForm.get('email')?.valid?sendOtp():sendError()">Lấy OTP</span>
+                        </div>
+                        <small class="text-danger"
+                            *ngIf="postForm.get('otp')?.invalid && postForm.get('otp')?.touched">Hãy nhập mã OTP có 6 kí
+                            tự</small>
+                    </div>
+                    <div class="form-group col-6 mt-4">
+                        <label for="address">Địa chỉ:</label>
+                        <input type="text" name="address" id="address" class="form-control" placeholder="Địa chỉ"
+                            [ngClass]="{'is-invalid':postForm.get('address')?.touched && postForm.get('address')?.invalid}"
+                            formControlName="address">
+                        <small class="text-danger"
+                            *ngIf="postForm.get('address')?.invalid && postForm.get('address')?.touched">Hãy nhập đúng
+                            địa chỉ</small>
+                    </div>
+                    <div class="form-group col-6 mt-4">
+                        <label for="phone">Số điện thoại:</label>
+                        <input type="text" name="phone" id="phone" class="form-control" placeholder="Số điện thoại"
+                            [ngClass]="{'is-invalid':postForm.get('phone')?.touched && postForm.get('phone')?.invalid}"
+                            formControlName="phone">
+                        <small class="text-danger"
+                            *ngIf="postForm.get('phone')?.invalid && postForm.get('phone')?.touched">Hãy nhập đúng số
+                            điện thoại</small>
+                    </div>
+                    <button mat-raised-button color="primary" class="col-2" style="margin-top: 5%; margin-left: 2%;"
+                        [disabled]="postForm?.invalid" (click)="register()">Đăng kí</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

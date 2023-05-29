@@ -1,0 +1,50 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" style="background-color: rgb(8, 6, 6) !important;">
+    <div class="container px-4 px-lg-5">
+        <a class="navbar-brand" [routerLink]="['/home-page']" routerLinkActive="router-link-active">Nguyễn Tùng lâm</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
+                class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                <li class="nav-item"><a class="nav-link" aria-current="page" [routerLink]="['/home-page']">Trang chủ</a>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="#!">Giới thiệu</a></li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['/home-page']" routerLinkActive="router-link-active">Sản phẩm</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">Hãng</a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li *ngFor="let item of categories">
+                            <a class="dropdown-item"
+                                [routerLink]="['/brand/'+item.categoryId]">{{item.categoryName}}</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <form class="d-flex">
+                <button [routerLink]="['/carts']" class="btn btn-outline-light" type="submit">
+                    <i class="bi-cart-fill me-1"></i>
+                    Cart
+                    <span class="badge bg-light text-dark ms-1 rounded-pill">{{totalCartItem}}</span>
+                </button>
+            </form>
+            <div class="dropdown">
+                <a class="bi bi-person-fill nav-link p-0" id="navbarDropdown" data-bs-toggle="dropdown"
+                    style="color: white; margin: auto 0 auto 20px; font-size: 28px; cursor: pointer;">
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" [routerLink]="['/customer']" *ngIf="user!=null">Thông tin cá nhân</a>
+                    </li>
+                    <li><a class="dropdown-item" (click)="logout()" style="cursor: pointer;" *ngIf="user!=null">Đăng
+                            xuất</a></li>
+                    <li><a class="dropdown-item" [routerLink]="['/login']" *ngIf="user==null">Đăng nhập</a></li>
+                    <li><a class="dropdown-item" [routerLink]="['/register']" *ngIf="user==null">Đăng kí</a></li>
+                    <li><a class="dropdown-item" [routerLink]="['/forgot-password']" *ngIf="user==null">Quên mật
+                            khẩu?</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>

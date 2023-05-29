@@ -1,0 +1,69 @@
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">        
+        <h2 class="modal-title p-0">Chỉnh sửa thông tin cá nhân</h2>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="postForm" class="row p-2">
+            <input type="hidden" formControlName="userId">
+            <input type="hidden" formControlName="registerDate">
+            <input type="hidden" formControlName="status">
+            <input type="hidden" formControlName="password">
+            <input type="hidden" formControlName="role">
+            <div class="col-6">
+                <div class="form-group col-12">
+                    <label for="emailE">Email:</label>
+                    <input readonly [ngClass]="{'is-invalid':postForm.get('email')?.touched && postForm.get('email')?.invalid}"
+                        type="text" name="emailE" class="form-control" email id="emailE" placeholder="Email"
+                        formControlName="email">
+                    <small class="text-danger"
+                        *ngIf="postForm.get('email')?.invalid && postForm.get('email')?.touched">Email không hợp
+                        lệ</small>
+                </div>
+                <div class="form-group col-12 mt-3">
+                    <label for="nameE">Tên:</label>
+                    <input [ngClass]="{'is-invalid':postForm.get('name')?.touched && postForm.get('name')?.invalid}"
+                        type="text" name="nameE" class="form-control" id="nameE" placeholder="Nguyễn Văn A"
+                        formControlName="name">
+                    <small class="text-danger"
+                        *ngIf="postForm.get('name')?.invalid && postForm.get('name')?.touched">Tên không hợp lệ</small>
+                </div>
+                <div class="form-group col-12 mt-3">
+                    <label for="addressE">Địa chỉ:</label>
+                    <input [ngClass]="{'is-invalid':postForm.get('address')?.touched && postForm.get('address')?.invalid}"
+                        type="text" name="addressE" class="form-control" id="addressE" placeholder="Hà Nội"
+                        formControlName="address">
+                    <small class="text-danger"
+                        *ngIf="postForm.get('name')?.invalid && postForm.get('name')?.touched">Địa chỉ không hợp lệ</small>
+                </div>
+                <div class="form-group col-12 mt-3">
+                    <label for="phoneE">Số điện thoại:</label>
+                    <input [ngClass]="{'is-invalid':postForm.get('phone')?.touched && postForm.get('phone')?.invalid}"
+                        type="text" name="phoneE" class="form-control" id="phoneE" placeholder="Hà Nội"
+                        formControlName="phone">
+                    <small class="text-danger"
+                        *ngIf="postForm.get('phone')?.invalid && postForm.get('phone')?.touched">Số điện thoại không hợp lệ</small>
+                </div>
+                <div class="form-group col-12 mt-3">
+                    <label for="genderE">Giới tính:</label>
+                    <select class="form-select" id="genderE" name="genderE" formControlName="gender">
+                        <option value="true">Nam</option>
+                        <option value="false">Nữ</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="col-12 text-center">
+                    <label>Ảnh đại diện</label> <br>
+                    <img [src]="url" style="width: 150px;" id="blah" class="img-fluid">
+                    <div class="input-group" style="width: 80%; margin-left: 10%; margin-top: 5%;">
+                        <input type="file" accept="image/*" (change)="readUrl($event)" class="form-control"
+                            id="inputGroupFile01">
+                    </div>
+                </div>
+            </div>
+            <button class="col-2 mt-4" style="margin-left: 2%;" mat-raised-button color="primary" (click)="update()"
+                [disabled]="postForm?.invalid">Lưu</button>
+        </form>
+    </div>
+</ng-template>
+<button mat-raised-button (click)="open(content)">Chỉnh sửa</button>

@@ -1,0 +1,105 @@
+<!-- Product section-->
+<section class="py-5" style="min-height: 700px;">
+    <div class="container my-5"
+        style="border: 1px solid rgb(235, 235, 235); border-radius: 15px;min-height: 470px;box-shadow: 0 0 6px rgb(226, 226, 226);">
+        <div class="row">
+            <div class="col-4 offset-4 text-center mt-2">
+                <img [src]="customer.image" style="width: 80px" class="img-fluid rounded-circle">
+                <h2 style="font-size: 23px; margin-top: 3%;">Xin chào {{customer.name}} !</h2>
+            </div>
+            <div class="col-8 offset-2 row">
+                <div class="form-group col-6 p-3">
+                    <label for="name">Họ tên:</label>
+                    <input type="text" id="name" [value]='customer.name' [title]='customer.name' class="form-control"
+                        readonly>
+                </div>
+                <div class="form-group col-6 p-3">
+                    <label for="email">Email:</label>
+                    <input type="text" id="email" [value]='customer.email' [title]='customer.email' class="form-control"
+                        readonly>
+                </div>
+                <div class="form-group col-6 p-3">
+                    <label for="registerDate">Ngày đăng kí:</label>
+                    <input type="text" id="registerDate" [value]="customer.registerDate|date:'dd-MM-yyyy'"
+                        [title]="customer.registerDate|date:'dd-MM-yyyy'" class="form-control" readonly>
+                </div>
+                <div class="form-group col-6 p-3">
+                    <label for="gender">Giới tính:</label>
+                    <input type="text" id="gender" [value]="customer.gender?'Nam':'Nữ'"
+                        [title]="customer.gender?'Nam':'Nữ'" class="form-control" readonly>
+                </div>
+                <div class="form-group col-6 p-3">
+                    <label for="address">Địa chỉ:</label>
+                    <input type="text" id="address" [value]="customer.address" [title]="customer.address"
+                        class="form-control" readonly>
+                </div>
+                <div class="form-group col-6 p-3">
+                    <label for="phone">Số điện thoại:</label>
+                    <input type="text" id="phone" [value]="customer.phone" [title]="customer.phone" class="form-control"
+                        readonly>
+                </div>
+                <app-edit-profile class="m-1 mb-3" [id]="customerId" (editFinish)="finish()"></app-edit-profile>
+            </div>
+            <hr class="col-8 offset-2">
+            <!-- <mat-tab-group mat-align-tabs="start" class="col-8 offset-2 mt-4 mb-4">
+                <mat-tab label="Đơn hàng chờ xác nhận">
+                    
+                </mat-tab>
+                <mat-tab label="Đơn hàng đã huỷ">Content 2</mat-tab>
+                <mat-tab label="Đơn hàng đã thanh toán">Content 3</mat-tab>
+            </mat-tab-group> -->
+            <div class="col-8 offset-2 mt-4 mb-4" *ngIf="isLoadingOrder">
+                <div class="pull-right label label-info row col" style="min-height: 200px !important;">
+                    <div class="spinner-border" role="status"
+                        style="margin: auto; width: 6em;height: 6em; border: 0.7em solid black currentColor;">
+                    </div>
+                </div>
+            </div>
+            <div class="col-8 offset-2 mt-4 mb-4">
+                <h2>Lịch sử đặt hàng</h2>
+                <table mat-table [dataSource]="listOrder" matSort class="mat-elevation-z8">
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 15%;">Mã đơn hàng</th>
+                        <td mat-cell *matCellDef="let row">{{row.id}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="amount">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Tổng tiền</th>
+                        <td mat-cell *matCellDef="let row">{{row.amount|currency:'VND'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="address">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 25%;">Địa chỉ</th>
+                        <td mat-cell *matCellDef="let row">{{row.address}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="phone">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Số điện thoại</th>
+                        <td mat-cell *matCellDef="let row">{{row.phone}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="orderDate">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Ngày mua</th>
+                        <td mat-cell *matCellDef="let row">{{row.orderDate|date:'dd-MM-yyyy'}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>Trạng Thái</th> 
+                        <td mat-cell *matCellDef="let row">{{row.status==0?"Đã huỷ":row.status==1?"Chờ xác nhận":row.status==2?"Đang giao hàng":"Đã giao"}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="view">
+                        <th mat-header-cell *matHeaderCellDef>Chi tiết</th>
+                        <td mat-cell *matCellDef="let row">
+                            <app-order-detail [orderId]="row.id"></app-order-detail>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef>Huỷ đơn</th> 
+                        <td mat-cell *matCellDef="let row">
+                            <a [ngClass]="{'disabled':row.status!=1}" style="cursor: pointer; color: orangered;" (click)='cancel(row.id)'><i class="bi bi-x-circle-fill"></i></a>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+                </table>
+                <mat-paginator [length]="orderLength" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 50, 100]">
+                </mat-paginator>
+            </div>
+        </div>
+    </div>
+</section>

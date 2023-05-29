@@ -1,0 +1,120 @@
+<!-- Product section-->
+<section class="py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="row gx-4 gx-lg-5 align-items-center">
+            <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" [src]="product.image" /></div>
+            <div class="col-md-6">
+                <div class="small mb-1">Mã SP: {{product.productId}}</div>                
+                <h1 class="display-5 fw-bolder">{{product.name}}</h1>
+                <ngb-rating class="mb-2" [(rate)]="rateAvg" [starTemplate]="t" [readonly]="true" title="{{rateAvg}} sao" [max]="5"></ngb-rating> | <span>{{rateLength}} đánh giá</span>
+                <div class="fs-5 mb-3">
+                    <small class="text-decoration-line-through"
+                        style="color: thistle; font-size: 70%;">{{product.price|currency:'VND'}}</small>
+                    <span
+                        style="font-weight: bold; color: rgb(199, 61, 61);">{{product.price*(1-product.discount/100)|currency:'VND'}}</span>
+                    <small class="badge bg-danger ms-3" style="font-size: 60%;">-{{product.discount}}% Giảm</small>
+                </div>
+                <div class="fs-5 mb-4">
+                    <span>Hãng: {{product.category.categoryName}}
+                        <small style="font-size: 12px; font-style: italic;">(còn {{product.quantity}} sản phẩm.)</small>
+                    </span>
+                </div>
+                <p class="lead">{{product.description}}</p>
+                <div class="d-flex">
+                    <button class="btn btn-outline-dark flex-shrink-0" type="button"
+                        (click)="addCart(product.productId, product.price*(1-product.discount/100))">
+                        <i class="bi-cart-fill me-1"></i>
+                        Add to cart
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <h3 style="font-weight: bold; font-size: 20px;">Đánh giá nhận xét về sản phẩm</h3>
+            <select class="form-select mb-2" style="width: 10%; margin-left: 90%;" [(ngModel)]="rateSize" *ngIf="rates.length>0">
+                <option value="5">Hiển thị 5</option>
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+              </select>
+            <div class="border rounded p-3" *ngIf="rateLength==0">
+                <i class="text-center">Sản phẩm này chưa có đánh giá nào!</i>
+            </div>
+            <div class="border rounded" *ngIf="rateLength>0">
+                <mat-list>
+                    <mat-list-item *ngFor="let item of ratesI |orderBy:'rateDate':true| paginate: { itemsPerPage: rateSize, currentPage: 1 }"
+                        class="mb-5 mt-4">
+                        <img [src]="item.user.image" style="width: 50px;" class="img-fluid p-2 col-3">
+                        <div class="col-9">
+                            <span style="font-weight: bold;">{{item.user.name}}</span>
+                            <ngb-rating class="ms-2" [(rate)]="item.star" [starTemplate]="t" [readonly]="true"
+                                [max]="5"></ngb-rating>
+                            <p>{{item.comment}}</p>
+                            <i style="font-size: 12px;">{{item.rateDate|date:'dd-MM-yyyy'}}</i>
+                        </div>
+                    </mat-list-item>
+                </mat-list>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Related items section-->
+<section class="py-5">
+    <div class="container px-4 px-lg-5">
+        <h2 class="fw-bolder mb-4">Gợi ý sản phẩm</h2>
+        <div class="row" *ngIf="isLoading">
+            <div class="pull-right label label-info row col" style="min-height: 400px !important;">
+                <!-- <div class="loader"></div> -->
+                <div class="spinner-border" role="status"
+                    style="margin: auto; width: 6em;height: 6em; border: 0.7em solid black currentColor;">
+                </div>
+            </div>
+        </div>
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-5 justify-content-center" *ngIf="!isLoading">
+            <div class="col mb-5 p-1"
+                *ngFor="let item of productsSuggest | paginate: { itemsPerPage: 5, currentPage: 1}">
+                <div class="card h-100">
+                    <!-- Sale badge-->
+                    <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale
+                    </div>
+                    <!-- Product image-->
+                    <img class="card-img-top" [src]="item.image" [routerLink]="['/item-detail/'+item.productId]"
+                        style="cursor: pointer;" />
+                    <!-- Product details-->
+                    <div class="card-body p-4">
+                        <div class="text-center">
+                            <!-- Product name-->
+                            <h4 class="fw-bolder" [routerLink]="['/item-detail/'+item.productId]"
+                                style="cursor: pointer;">{{item.name}}</h4>
+                            <!-- Product reviews-->
+                            <div class="d-flex justify-content-center small text-warning mb-2">
+                                <ngb-rating class="mb-2" [rate]="getStar(item.productId)" [starTemplate]="t" [readonly]="true" title="{{getStar(item.productId)}} sao" [max]="5"></ngb-rating>
+                            </div>
+                            <!-- Product price-->
+                            <small class="text-muted text-decoration-line-through"
+                                style="color: thistle; font-size: 70%;">{{item.price|currency:'VND'}}</small>
+                            <span style="font-weight: bold;">{{item.price*(1-item.discount/100)|currency:'VND'}}</span>
+                        </div>
+                    </div>
+                    <!-- Product actions-->
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                        <div class="text-center"><a class="btn btn-outline-dark mt-auto"
+                                (click)="addCart(item.productId,item.price*(1-item.discount/100))">Add to cart</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- star -->
+<ng-template #t let-fill="fill">
+    <span class="star" [class.full]="fill === 100" style="font-size: 90%;">
+        <span class="half" [style.width.%]="fill">
+            <i class="fa fa-star"></i>
+        </span>
+        <i class="fa fa-star"></i>
+    </span>
+</ng-template>

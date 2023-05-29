@@ -1,0 +1,33 @@
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">        
+        <h2 class="modal-title p-0">Đánh giá sản phẩm</h2>
+    </div>
+    <div class="modal-body">
+        <form>
+            <div class="col-10 offset-1 d-block">
+                <img [src]="product.image" class="col-2" width="80px">
+                <span style="font-weight: bold;" class="ml-2">{{product.name}}</span>
+            </div>
+            <div class="col-10 offset-1 mt-3">
+                <label for="comment">Bình luận:</label>
+                <textarea class="form-control" [(ngModel)]="comment" name="comment" id="comment" row="3"></textarea>
+            </div>
+            <div class="col-10 offset-1 d-flex mt-3">
+                <span>Đánh giá:</span>
+                <ngb-rating class="ms-2" [(rate)]="star" [(ngModel)]="star" [starTemplate]="t" [readonly]="false" [max]="5"></ngb-rating>
+            </div>
+            <button class="mt-3" style="margin-left: 8%;" mat-raised-button color="primary" (click)="rating()">Gửi đánh giá</button>
+        </form>
+    </div>
+</ng-template>
+<a class="bi bi-star-fill" style="cursor: pointer;color: tomato;" (click)="open(content)"></a>
+
+<!-- star -->
+<ng-template #t let-fill="fill">
+    <span class="star" [class.full]="fill === 100" style="font-size: 90%;">
+        <span class="half" [style.width.%]="fill">
+            <i class="fa fa-star"></i>
+        </span>
+        <i class="fa fa-star"></i>
+    </span>
+</ng-template>

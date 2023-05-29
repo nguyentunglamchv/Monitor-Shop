@@ -1,0 +1,14 @@
+.form-control[readonly]{
+    background-color: white !important;
+    border: none;
+}
+
+a.disabled {
+    pointer-events: none;
+    cursor: default;
+    color: slategrey !important;
+  }
+
+table {
+    width: 100%;
+}
